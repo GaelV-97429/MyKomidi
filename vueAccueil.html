@@ -27,7 +27,8 @@
 				        {
 				        	if(myObj[i]['Spe_titre'] != undefined)
 				        	{
-				        		$('#titre'+z).html(capitalizeFirstLetter(myObj[i]['Spe_titre'].toLowerCase()));
+				        		$('#titre'+z+' a').html(capitalizeFirstLetter(myObj[i]['Spe_titre'].toLowerCase()));
+				        		$('#titre'+z+' a').attr('href', 'vueSpectacle?id='+myObj[i]['Spe_id']);
 				        		$('#note'+z).html(parseFloat(myObj[i]['Note']).toFixed(2)+"("+myObj[i]['NbNote']+"<span class='glyphicon glyphicon-user'></span>)");
 				        		z++;
 				        	}
@@ -52,7 +53,8 @@
 				        {
 				        	if(myObj[i]['Random'] != undefined || myObj[i]['Random'] == 0)
 				        	{
-				        		$('#titreA'+z).html(capitalizeFirstLetter(myObj[i]['Spe_titre'].toLowerCase()));
+				        		$('#titreA'+z+' a').html(capitalizeFirstLetter(myObj[i]['Spe_titre'].toLowerCase()));
+				        		$('#titreA'+z+' a').attr('href', 'vueSpectacle?id='+myObj[i]['Spe_id']);
 				        		if (myObj[i]['NbNote'] > 0)
 				        		{
 				        			$('#noteA'+z).html(parseFloat(myObj[i]['Note']).toFixed(2)+"("+myObj[i]['NbNote']+"<span class='glyphicon glyphicon-user'></span>)");
@@ -66,7 +68,7 @@
 				        }
 				    }				
 				};
-				xmlhttp.open("GET", "test.php", true);
+				xmlhttp.open("GET", "json.php", true);
 				xmlhttp.send();
 			}
 
@@ -90,11 +92,20 @@
 				setInterval(changedHeight, 300);
 				Spectacles();
 				SpectaclesRandom();
+
+				$('#btnNav').on('click', function(){
+					$('#Nav').animate({
+						height: 'toggle'
+					});
+				})
 			});
 		</script>
 	</head>
 	<body>
 		<div class="container" id="HeaderConnexion">
+			<button style="position: absolute; right: 5%; top: 25%; height: 50%; width: 100px; background-color: black; border: none; paddding: 0; z-index: 10" id="btnNav">
+				<span style="color: white; padding-top: 15%; height: 50%;" class="glyphicon glyphicon-menu-hamburger"></span>
+			</button>
 			<div class="row">
 				<div class="col-sm-12">
 					<h2 style="font-weight: bold; font-size: 40px">myKomidi</h2>
@@ -107,6 +118,17 @@
 			</div>
 		</div>
 		<div class="container" id="BodyAccueil">
+			<div class="container" id="Nav">
+				<div class="row" style="border-bottom: 5px solid #404040">
+					<div class="col-sm-12"><a href="vueAccueil.html">Accueil</a></div>
+				</div>
+				<div class="row" style="border-bottom: 5px solid #404040">
+					<div class="col-sm-12"><a href="vueSpectacle.html">Spectacle</a></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12"><a href="vueSalle.html">Salle</a></div>
+				</div>
+			</div>
 			<div class="container" id="SpectaclesN">
 				<div id="transparenceS"></div>
 				<div class="row" style="height: 90px; border: 0.06em solid black; background-color: #303030; color: #FFFFFF">
@@ -115,23 +137,23 @@
 					</div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.08em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titre1" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titre1" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="note1"></div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.08em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titre2" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titre2" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="note2"></div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.08em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titre3" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titre3" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="note3"></div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.08em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titre4" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titre4" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="note4"></div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.08em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titre5" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titre5" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="note5"></div>
 				</div>
 			</div>
@@ -145,23 +167,23 @@
 					</div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.06em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titreA1" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titreA1" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="noteA1"></div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.06em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titreA2" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titreA2" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="noteA2"></div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.06em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titreA3" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titreA3" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="noteA3"></div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.06em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titreA4" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titreA4" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="noteA4"></div>
 				</div>
 				<div class="row" style="height: 120px; border: 0.06em solid black; border-top: none; background-color: #C0C0C0; padding: 0 0.4em 0 0.4em">
-					<div class="col-sm-8" id="titreA5" style="color: #0055AA; font-weight: bold; padding: 1px;"></div>
+					<div class="col-sm-8" id="titreA5" style="font-weight: bold; padding: 1px;"><a href="#"></a></div>
 					<div class="col-sm-4" style="text-align: right; font-weight: bold; padding-top: 25px;" id="noteA5"></div>
 				</div>
 			</div>
