@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="../Style.css">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<meta charset="utf-8">
+		<!-- la balise suivant permet de block la map en pleine écran de façon a ce que l'utilisateur ne puissent pas la réduire --> 
+		<!--<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />-->
+		
+		<!-- La balise suivant fais appela l"API de google map --> 
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDzVKXEwNU231S0tvNiHV0e_iAT4EuplB0"></script>
+		<script>
+			$.urlParam = function(name){
+				var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+				return results[1] || 0;
+			};
+
+			function Spectacles()
+			{
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() 
+				{
+				    if (this.readyState == 4 && this.status == 200) 
+				    {
+				        var myObj = JSON.parse(this.responseText);
+				        $('#latitude').val(myObj[0].Sal_latitude);
+				        $('#longitude').val(myObj[0].Sal_longitude);			    
+
+					}				
+				};
+				xmlhttp.open("GET", "http://lebonc.alwaysdata.net/json.php?id="+IdSalle, true);
+				xmlhttp.send();
+			}
+			$(document).ready(function()
+			{
+				IdSalle = $.urlParam('id');
+			 Spectacles();
+			  
+			setTimeout(function()
+			{
+				console.log($('#latitude').val());
+
+				
+			 var directionsDisplay = new google.maps.DirectionsRenderer();
+			 var directionsService = new google.maps.DirectionsService();
+
+
+			function calcRoute(start, end) {
+
+			  var request = {
+			    origin:start,
+			    destination:end,
+			    travelMode: google.maps.TravelMode.DRIVING
+			  };
+			  directionsService.route(request, function(result, status) {
+			    if (status == google.maps.DirectionsStatus.OK) {
+			      directionsDisplay.setDirections(result);
+			    }
+			  });
+			}
+
+			function maPosition(position) {
+				var infopos = "Position déterminée :\n";
+				infopos += "Latitude : "+$('#latitude').val() +"\n";
+				infopos += "Longitude: "+$('#longitude').val() +"\n";
+				document.getElementById("infoposition").innerHTML = infopos;
+			}
+			latLng = new google.maps.LatLng(parseFloat($('#latitude').val()), parseFloat($('#longitude').val()));
+
+			
+			// Permet de centrer la carte sur la position latlng
+			
+			
+			if(navigator.geolocation)
+				navigator.geolocation.getCurrentPosition(function(position)
+				{
+					var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+					var marker = new google.maps.Marker({
+						position: pos,
+						map: map,
+						title:"Vous êtes ici"
+					});
+					calcRoute(pos, latLng);
+
+					map.panTo(pos);
+					directionsDisplay.setMap(map);
+				});
+
+
+			//var latLng = new google.maps.LatLng(-21.380134,55.616107);
+
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 16,
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				center: latLng
+			});
+
+			
+
+			var marker = new google.maps.Marker({
+				position: latLng,
+				map: map,
+				title:"Vous aller là"
+			});
+			
+			
+
+			// .. et la variable qui va stocker les coordonnées
+			var latLng;
+
+			// Fonction de callback en cas d’erreur
+			function erreurPosition(error) {
+			    var info = "Erreur lors de la géolocalisation : ";
+			    switch(error.code) {
+			    case error.TIMEOUT:
+			    	info += "Timeout !";
+			    break;
+			    case error.PERMISSION_DENIED:
+				info += "Vous n’avez pas donné la permission";
+			    break;
+			    case error.POSITION_UNAVAILABLE:
+			    	info += "La position n’a pu être déterminée";
+			    break;
+			    case error.UNKNOWN_ERROR:
+				info += "Erreur inconnue";
+			    break;
+			    }
+			    document.getElementById("infoposition").innerHTML = info;
+			}
+
+			},2000);
+		    
+			
+				$('#btnNav').on('click', function(){
+          			$('#Nav').animate({
+          				height: 'toggle'
+          			});
+        		});
+
+			
+			});
+
+
+
+
+		</script>
+		<title>Géolocalisation Salle</title>
+	</head>
+	<body>
+	<div class="container" id="HeaderConnexion">
+      <button style="position: absolute; right: 5%; top: 25%; height: 50%; width: 100px; background-color: black; border: none; paddding: 0; z-index: 10" id="btnNav">
+        <span style="color: white; padding-top: 15%; height: 50%;" class="glyphicon glyphicon-menu-hamburger"></span>
+      </button>
+      <div class="row">
+        <div class="col-sm-12">
+          <h2 style="font-weight: bold; font-size: 40px">myKomidi</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <p>Salle Par Ville</p>
+        </div>
+      </div>
+    </div>
+
+
+	<input type="text" id="latitude" hidden>
+	<input type="text" id="longitude" hidden>
+
+		<div id="BodyAccueil" class="container">
+		<div class="container" id="Nav">
+				<div class="row" style="border-bottom: 5px solid #404040">
+					<div class="col-sm-12"><a href="vueAccueil.html">Accueil</a></div>
+				</div>
+				<div class="row" style="border-bottom: 5px solid #404040">
+					<div class="col-sm-12"><a href="VueSpectacles.html">Spectacle</a></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12"><a href="VueSalle.html">Salle</a></div>
+				</div>
+			</div>
+			<div class="row" style="height: 100%" >
+				<div class="col-sm-12" id="map" style="height: 100%"></div>
+
+		<!-- Un élément HTML pour recueillir la carte -->
+			</div>
+			<div class="row">
+
+		<!-- Un élément HTML pour recueillir l’affichage -->
+				<div id="infoposition" class="col-sm-12"></div>
+			</div>
+		</div>
+
+		
+	</body>
+</html>
+
+
+
+
